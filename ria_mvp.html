@@ -191,22 +191,8 @@
       </div>
     </div>
 
-    <div class="pricing-section">
-      <button class="pricing-btn" id="pricing-btn" onclick="togglePricing()">요금제 보기</button>
-      <div class="pricing-panel" id="pricing-panel">
-        <div class="p-icon">🌿</div>
-        <div class="p-title">may me는 지금 리아와 함께 성장 중이에요.</div>
-        <div class="p-desc">출시 전 가장 먼저 만나보실 수 있도록<br>이메일을 남겨주세요.</div>
-        <div class="email-row">
-          <input type="email" id="pricing-email" placeholder="이메일 주소">
-          <button class="p-submit" onclick="submitEmail()">알림 받기</button>
-        </div>
-        <div class="p-success" id="p-success">✓ 등록됐어! 리아가 기다릴게요 🌿</div>
-      </div>
-    </div>
-
     <div class="landing-bottom">
-      <button class="try-btn" onclick="goToMain()">먼저 무료로 체험해보기</button>
+      <button class="try-btn" onclick="goToMain()" style="background:rgba(200,170,255,0.12);border-color:var(--accent);color:var(--accent);font-weight:700;">리아와 대화 시작하기 →</button>
     </div>
   </div>
 
@@ -326,6 +312,22 @@
     <div class="done-btns">
       <button onclick="goToMain()">다시 말하기</button>
       <button class="primary" id="done-confirm-btn" onclick="confirmAction()">응, 해볼게 💪</button>
+    </div>
+
+    <!-- 체험 완료 후 선택지 -->
+    <div style="display:flex;gap:10px;width:100%;margin-top:4px;">
+      <button onclick="goToLanding()" style="flex:1;padding:14px;border-radius:14px;border:1px solid var(--border);background:none;color:var(--text2);font-size:14px;cursor:pointer;">나가기</button>
+      <button id="done-pricing-btn" onclick="toggleDonePricing()" style="flex:1;padding:14px;border-radius:14px;border:1px solid var(--accent);background:rgba(200,170,255,0.12);color:var(--accent);font-size:14px;font-weight:700;cursor:pointer;">요금제 보기</button>
+    </div>
+    <div class="pricing-panel" id="done-pricing-panel" style="display:none;width:100%;margin-top:8px;">
+      <div class="p-icon">🌿</div>
+      <div class="p-title">리아가 곧 정식으로 찾아와요.</div>
+      <div class="p-desc">출시 소식을 가장 먼저 받아볼게요.<br>이메일만 남겨주세요.</div>
+      <div class="email-row">
+        <input type="email" id="pricing-email" placeholder="이메일 주소">
+        <button class="p-submit" onclick="submitEmail()">알림 받기</button>
+      </div>
+      <div class="p-success" id="p-success">✓ 등록됐어! 리아가 기다릴게요 🌿</div>
     </div>
   </div>
 
@@ -480,6 +482,7 @@ const RIA = {
 
 // ══ 화면 전환 ══
 function goToMain() { showScreen('screen-main'); resetMain(); }
+function goToLanding() { showScreen('screen-landing'); }
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -708,12 +711,28 @@ function toggleHistory() { document.getElementById('history-list').classList.tog
 function togglePricing() {
   const panel = document.getElementById('pricing-panel');
   const btn = document.getElementById('pricing-btn');
-  const open = panel.style.display !== 'none';
+  const open = panel && panel.style.display !== 'none';
   const cnt = parseInt(localStorage.getItem('ria_pricing_clicks')||'0') + 1;
   localStorage.setItem('ria_pricing_clicks', cnt);
-  panel.style.display = open ? 'none' : 'block';
-  btn.textContent = open ? '요금제 보기' : '요금제 닫기';
-  if (!open) setTimeout(() => panel.scrollIntoView({behavior:'smooth',block:'nearest'}), 50);
+  if (panel) panel.style.display = open ? 'none' : 'block';
+  if (btn) btn.textContent = open ? '요금제 보기' : '요금제 닫기';
+}
+
+function toggleDonePricing() {
+  const panel = document.getElementById('done-pricing-panel');
+  const btn = document.getElementById('done-pricing-btn');
+  const open = panel.style.display !== 'none';
+  // 클릭할 때마다 카운트 (열 때만)
+  if (open) {
+    panel.style.display = 'none';
+    btn.textContent = '💜 정식 출시 알림 받기';
+  } else {
+    const cnt = parseInt(localStorage.getItem('ria_pricing_clicks')||'0') + 1;
+    localStorage.setItem('ria_pricing_clicks', cnt);
+    panel.style.display = 'block';
+    btn.textContent = '닫기';
+    setTimeout(() => panel.scrollIntoView({behavior:'smooth',block:'nearest'}), 50);
+  }
 }
 function submitEmail() {
   const input = document.getElementById('pricing-email');
@@ -728,7 +747,63 @@ function submitEmail() {
 
 // ══ 유틸 ══
 function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
-window.addEventListener('load', () => { renderHistory(); const h = getHistory(); if(h.length) document.getElementById('streak-badge').textContent = `🌿 연속 ${calcStreak(h)}일`; });
+window.addEventListener('load', () => {
+  renderHistory();
+  const h = getHistory();
+  if(h.length) document.getElementById('streak-badge').textContent = `🌿 연속 ${calcStreak(h)}일`;
+  if(location.hash === '#admin') showAdmin();
+});
+
+// ══ 관리자 대시보드 ══
+function showAdmin() {
+  const clicks = parseInt(localStorage.getItem('ria_pricing_clicks')||'0');
+  const emails = JSON.parse(localStorage.getItem('ria_emails')||'[]');
+  const history = getHistory();
+  const actions = parseInt(localStorage.getItem('ria_actions')||'0');
+  const convRate = clicks > 0 ? ((emails.length / clicks) * 100).toFixed(1) : '0.0';
+
+  const panel = document.createElement('div');
+  panel.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#0f0f1a;color:#f0eeff;font-family:-apple-system,sans-serif;overflow-y:auto;z-index:9999;padding:24px;max-width:420px;margin:0 auto;';
+  panel.innerHTML = `
+    <div style="font-size:20px;font-weight:800;color:#c8aaff;margin-bottom:4px;">may me 📊</div>
+    <div style="font-size:12px;color:#a09acc;margin-bottom:24px;">관리자 대시보드 · ${new Date().toLocaleDateString('ko-KR')}</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(180,140,255,0.2);border-radius:16px;padding:16px;text-align:center;">
+        <div style="font-size:32px;font-weight:800;color:#c8aaff;">${clicks}</div>
+        <div style="font-size:11px;color:#a09acc;margin-top:4px;">요금제 보기 클릭</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(180,140,255,0.2);border-radius:16px;padding:16px;text-align:center;">
+        <div style="font-size:32px;font-weight:800;color:#c8aaff;">${emails.length}</div>
+        <div style="font-size:11px;color:#a09acc;margin-top:4px;">이메일 등록 수</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(180,140,255,0.2);border-radius:16px;padding:16px;text-align:center;">
+        <div style="font-size:32px;font-weight:800;color:#c8aaff;">${convRate}%</div>
+        <div style="font-size:11px;color:#a09acc;margin-top:4px;">전환율 (클릭→등록)</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(180,140,255,0.2);border-radius:16px;padding:16px;text-align:center;">
+        <div style="font-size:32px;font-weight:800;color:#c8aaff;">${history.length}</div>
+        <div style="font-size:11px;color:#a09acc;margin-top:4px;">총 대화 횟수</div>
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(180,140,255,0.2);border-radius:16px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:12px;color:#c8aaff;font-weight:600;margin-bottom:10px;">📧 등록된 이메일</div>
+      ${emails.length === 0
+        ? '<div style="font-size:13px;color:#a09acc;">아직 등록된 이메일이 없어요.</div>'
+        : emails.map((e,i) => `<div style="font-size:13px;padding:6px 0;border-bottom:1px solid rgba(180,140,255,0.1);color:#f0eeff;">${i+1}. ${e}</div>`).join('')
+      }
+    </div>
+
+    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(180,140,255,0.2);border-radius:16px;padding:16px;margin-bottom:24px;">
+      <div style="font-size:12px;color:#c8aaff;font-weight:600;margin-bottom:10px;">💬 최근 대화 감정</div>
+      ${history.slice(0,5).map(h => `<div style="font-size:13px;padding:5px 0;border-bottom:1px solid rgba(180,140,255,0.1);color:#a09acc;"><span style="color:#c8aaff;">${h.emotion}</span> · ${h.date}</div>`).join('') || '<div style="font-size:13px;color:#a09acc;">대화 기록 없음</div>'}
+    </div>
+
+    <button onclick="location.hash='';location.reload();" style="width:100%;padding:14px;background:rgba(200,170,255,0.12);border:1px solid #c8aaff;border-radius:14px;color:#c8aaff;font-size:14px;font-weight:700;cursor:pointer;">← 앱으로 돌아가기</button>
+  `;
+  document.body.appendChild(panel);
+}
 </script>
 </body>
 </html>
