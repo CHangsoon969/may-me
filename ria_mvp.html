@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>may me — 리아와 대화</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0f0f1a;
+    --bg2: #161626;
+    --accent: #c8aaff;
+    --accent2: #9d7fe8;
+    --text: #f0eeff;
+    --text2: #a09aCC;
+    --card: rgba(255,255,255,0.06);
+    --border: rgba(180,140,255,0.2);
+    --r: 20px;
+    --rb: 14px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ── 헤더 ── */
+  .header {
+    padding: 18px 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
+  .streak-badge {
+    font-size: 12px;
+    color: var(--text2);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+  }
+
+  /* ── 캐릭터 영역 ── */
+  .character-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px 0;
+  }
+
+  .ria-wrap {
+    width: 160px;
+    height: 160px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ria-sprite {
+    width: 160px;
+    height: 160px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    transition: opacity 0.2s ease;
+  }
+
+  /* ── 말풍선 ── */
+  .bubble-wrap {
+    position: relative;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 6px;
+    min-height: 80px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .bubble {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    width: 100%;
+    position: relative;
+    backdrop-filter: blur(8px);
+  }
+  .bubble::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: var(--border);
+  }
+  .bubble::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-bottom-color: #161626;
+  }
+
+  .bubble .ria-name {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* typing 애니메이션 */
+  .typing-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: blink 1.2s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── 구분선 ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 20px;
+    opacity: 0.5;
+  }
+
+  /* ── 감정 선택 ── */
+  .section-label {
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.5px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+  }
+
+  .emotion-grid {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px;
+    flex-wrap: wrap;
+  }
+  .emotion-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .emotion-btn:hover, .emotion-btn.active {
+    background: rgba(200, 170, 255, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── 텍스트 입력 ── */
+  .input-area {
+    padding: 14px 20px 0;
+  }
+  .input-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  textarea {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--rb);
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--text);
+    resize: none;
+    font-family: inherit;
+    line-height: 1.5;
+    min-height: 48px;
+    max-height: 120px;
+    transition: border-color 0.2s;
+  }
+  textarea::placeholder { color: var(--text2); opacity: 0.6; }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  .send-btn {
+    width: 48px; height: 48px;
+    background: var(--accent2);
+    border: none;
+    border-radius: var(--rb);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  .send-btn:hover { background: var(--accent); }
+  .send-btn:active { transform: scale(0.95); }
+
+  /* ── 응답 버튼 ── */
+  .response-btns {
+    display: flex;
+    gap: 10px;
+    padding: 14px 20px 0;
+  }
+  .resp-btn {
+    flex: 1;
+    padding: 14px 10px;
+    border-radius: var(--rb);
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .resp-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .resp-btn.primary {
+    background: rgba(200,170,255,0.12);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── 대화 기록 ── */
+  .history-toggle {
+    margin: 16px 20px 0;
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .history-toggle:hover { color: var(--accent); }
+
+  .history-list {
+    padding: 10px 20px 0;
+    display: none;
+  }
+  .history-list.open { display: block; }
+  .history-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .history-item .h-date { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .history-item .h-emotion { color: var(--accent); font-size: 12px; }
+
+  /* ── 하단 여백 ── */
+  .bottom-pad { height: 40px; }
+
+  /* ── 화면 전환 ── */
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
+
+  /* ── 인트로 화면 ── */
+  #screen-intro {
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    text-align: center;
+    gap: 0;
+  }
+  .intro-logo {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .intro-sub {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+  .intro-ria {
+    width: 180px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    margin-bottom: 30px;
+  }
+  .intro-greeting {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 36px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 16px 20px;
+    text-align: left;
+  }
+  .intro-greeting .ria-tag {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .start-btn {
+    width: 100%;
+    padding: 16px;
+    background: rgba(200,170,255,0.15);
+    border: 1px solid var(--accent);
+    border-radius: var(--rb);
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .start-btn:hover { background: rgba(200,170,255,0.25); }
+
+  /* ── 완료 화면 ── */
+  #screen-done {
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    text-align: center;
+    gap: 16px;
+  }
+  .done-ria {
+    width: 160px;
+    image-rendering: pixelated;
+    object-fit: contain;
+  }
+  .done-title { font-size: 20px; font-weight: 700; color: var(--text); }
+  .done-msg { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .done-action-bubble {
+    background: rgba(200,170,255,0.1);
+    border: 1px solid var(--accent);
+    border-radius: var(--r);
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    text-align: left;
+    width: 100%;
+  }
+  .done-action-bubble .label {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .done-btns { display: flex; gap: 10px; width: 100%; margin-top: 8px; }
+  .done-btns button {
+    flex: 1;
+    padding: 14px;
+    border-radius: var(--rb);
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .done-btns button.primary {
+    background: rgba(200,170,255,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .done-btns button:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ══ 랜딩 화면 ══ -->
+  <div id="screen-intro" class="screen active" style="overflow-y:auto;">
+
+    <!-- 헤더 -->
+    <div style="padding:20px 24px 0; display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-size:20px; font-weight:800; color:var(--accent);">may me</div>
+      <button onclick="goToMain()" style="font-size:12px; color:var(--text2); background:none; border:1px solid var(--border); border-radius:20px; padding:6px 14px; cursor:pointer;">체험하기</button>
+    </div>
+
+    <!-- 히어로 -->
+    <div style="padding:32px 24px 0; text-align:center;">
+      <img src="ria_default.png" alt="리아" style="width:130px; image-rendering:pixelated; object-fit:contain;">
+      <div style="font-size:21px; font-weight:800; color:var(--text); line-height:1.45; margin-top:16px;">
+        리아와 함께 매일 한 걸음,<br>
+        <span style="color:var(--accent);">어제보다 성장한 자신으로.</span>
+      </div>
+      <div style="font-size:14px; color:var(--text2); margin-top:10px; line-height:1.7;">
+        AI 친구 리아가 매일 밤 옆에서 들어줘.<br>판단 없이, 비교 없이.
+      </div>
+    </div>
+
+    <!-- 주요 기능 3가지 -->
+    <div style="padding:24px 24px 0; display:flex; flex-direction:column; gap:10px;">
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:16px 18px; display:flex; align-items:flex-start; gap:14px;">
+        <div style="font-size:24px; flex-shrink:0;">💬</div>
+        <div>
+          <div style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:3px;">감정 대화</div>
+          <div style="font-size:13px; color:var(--text2); line-height:1.6;">오늘 기분을 리아한테 털어놔. 말하는 것만으로도 달라져.</div>
+        </div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:16px 18px; display:flex; align-items:flex-start; gap:14px;">
+        <div style="font-size:24px; flex-shrink:0;">🌱</div>
+        <div>
+          <div style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:3px;">작은 행동 제안</div>
+          <div style="font-size:13px; color:var(--text2); line-height:1.6;">버겁지 않은 딱 한 가지. 오늘 할 수 있는 것부터 시작해.</div>
+        </div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:16px 18px; display:flex; align-items:flex-start; gap:14px;">
+        <div style="font-size:24px; flex-shrink:0;">📅</div>
+        <div>
+          <div style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:3px;">연속 성장 기록</div>
+          <div style="font-size:13px; color:var(--text2); line-height:1.6;">내가 버텨온 날들이 쌓이는 걸 눈으로 확인해.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 요금제 보기 버튼 -->
+    <div style="padding:14px 24px 0;">
+      <button onclick="togglePricing()" id="pricing-btn" style="width:100%; padding:16px; background:rgba(200,170,255,0.12); border:1px solid var(--accent); border-radius:var(--rb); color:var(--accent); font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s;">
+        요금제 보기
+      </button>
+    </div>
+
+    <!-- 요금제 클릭 시 펼쳐지는 이메일 등록란 -->
+    <div id="pricing-panel" style="display:none; padding:12px 24px 0;">
+      <div style="background:rgba(200,170,255,0.07); border:1px solid rgba(200,170,255,0.3); border-radius:var(--r); padding:20px 18px;">
+        <div style="font-size:22px; text-align:center; margin-bottom:10px;">🌿</div>
+        <div style="font-size:15px; font-weight:700; color:var(--text); text-align:center; margin-bottom:6px;">아직 준비 중이에요</div>
+        <div style="font-size:13px; color:var(--text2); text-align:center; line-height:1.7; margin-bottom:18px;">
+          관심 가져줘서 고마워요.<br>출시되면 가장 먼저, 얼리버드 혜택과 함께 알려드릴게요.
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input type="email" id="pricing-email-input" placeholder="이메일 주소" style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:10px; padding:11px 14px; font-size:13px; color:var(--text); outline:none; font-family:inherit;">
+          <button onclick="submitPricingEmail()" style="background:var(--accent2); border:none; border-radius:10px; padding:11px 16px; color:white; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; flex-shrink:0;">알림 받기</button>
+        </div>
+        <div id="pricing-email-success" style="display:none; font-size:12px; color:var(--accent); margin-top:10px; text-align:center;">✓ 등록됐어! 출시되면 바로 알려줄게 🌿</div>
+      </div>
+    </div>
+
+    <!-- 무료 체험 버튼 -->
+    <div style="padding:12px 24px 48px;">
+      <button onclick="goToMain()" style="width:100%; padding:14px; background:none; border:1px solid var(--border); border-radius:var(--rb); color:var(--text2); font-size:14px; cursor:pointer;">
+        먼저 무료로 체험해보기
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ══ 메인 대화 화면 ══ -->
+  <div id="screen-main" class="screen">
+    <div class="header">
+      <div class="logo">may me</div>
+      <div class="streak-badge" id="streak-badge">🌿 연속 1일</div>
+    </div>
+
+    <div class="character-area">
+      <div class="ria-wrap">
+        <img class="ria-sprite" id="ria-sprite" src="ria_default.png" alt="리아">
+      </div>
+    </div>
+
+    <div class="bubble-wrap">
+      <div class="bubble" id="bubble">
+        <span class="ria-name">리아</span>
+        <span id="bubble-text">오늘 어떤 감정이 제일 컸어?</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">지금 기분이 어때?</div>
+    <div class="emotion-grid" id="emotion-grid">
+      <button class="emotion-btn" onclick="selectEmotion(this, '😔', '힘들다')">😔 힘들다</button>
+      <button class="emotion-btn" onclick="selectEmotion(this, '😤', '답답하다')">😤 답답하다</button>
+      <button class="emotion-btn" onclick="selectEmotion(this, '😰', '불안하다')">😰 불안하다</button>
+      <button class="emotion-btn" onclick="selectEmotion(this, '😶', '아무 생각 없다')">😶 멍하다</button>
+      <button class="emotion-btn" onclick="selectEmotion(this, '🙂', '괜찮다')">🙂 괜찮다</button>
+    </div>
+
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea id="user-input" placeholder="오늘 있었던 일을 말해줘..." rows="1"
+          oninput="autoResize(this)"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
+        <button class="send-btn" onclick="sendMsg()">↑</button>
+      </div>
+    </div>
+
+    <div class="response-btns" id="resp-btns" style="display:none">
+      <button class="resp-btn primary" id="resp-yes" onclick="respondYes()">응, 해볼게 💪</button>
+      <button class="resp-btn" id="resp-no" onclick="respondNo()">오늘은 쉴래 🌙</button>
+    </div>
+
+    <div class="history-toggle" onclick="toggleHistory()" id="history-toggle" style="display:none">
+      ▾ 지난 대화 보기
+    </div>
+    <div class="history-list" id="history-list"></div>
+
+    <div class="bottom-pad"></div>
+  </div>
+
+  <!-- ══ 완료 화면 ══ -->
+  <div id="screen-done" class="screen">
+    <img class="done-ria" id="done-ria-img" src="ria_cheer.png" alt="리아">
+    <div class="done-title" id="done-title">오늘도 잘했어 🌿</div>
+    <div class="done-msg" id="done-msg">자기 마음을 들여다보는 것,<br>그게 이미 대단한 거야.</div>
+    <div class="done-action-bubble" id="done-action-bubble">
+      <span class="label">리아의 제안</span>
+      <span id="done-action-text">오늘 딱 한 가지만 해봐.<br>따뜻한 물 한 잔 마시기 ☕</span>
+    </div>
+    <div class="done-btns">
+      <button onclick="goToMain()">다시 말하기</button>
+      <button class="primary" id="done-confirm-btn" onclick="confirmAction()">응, 해볼게 💪</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══ 상태 ══
+let state = {
+  selectedEmotion: null,
+  selectedEmoji: null,
+  currentPhase: 'emotion', // emotion | chat | response | done
+  currentAction: '',
+};
+
+window.addEventListener('load', function() {
+  loadHistory();
+  updateStreak();
+});
+
+// ══ 화면 전환 ══
+function goToMain() {
+  showScreen('screen-main');
+  resetMain();
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function resetMain() {
+  state.selectedEmotion = null;
+  state.currentPhase = 'emotion';
+  document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('resp-btns').style.display = 'none';
+  document.getElementById('user-input').value = '';
+  setBubble('오늘 어떤 감정이 제일 컸어?', 'default');
+}
+
+// ══ 감정 선택 ══
+function selectEmotion(btn, emoji, label) {
+  document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.selectedEmotion = label;
+  state.selectedEmoji = emoji;
+
+  // 리아 반응
+  const replies = {
+    '힘들다': ['그렇구나... 많이 지쳤지?', '오늘 많이 힘들었겠다.', '힘든 하루였구나. 말해줘서 고마워.'],
+    '답답하다': ['뭔가 막혀있는 느낌이지?', '답답한 거 제일 지치지. 어디서부터 막혔어?', '풀리지 않는 게 있구나.'],
+    '불안하다': ['불안한 게 제일 무섭지. 뭐가 걱정돼?', '괜찮아, 여기 있어. 뭐가 마음에 걸려?', '불안할 때는 말하는 게 조금 나아.'],
+    '아무 생각 없다': ['그런 날 있어. 그냥 멍하게 있어도 돼.', '아무 생각 없는 것도 피로의 한 종류야.', '멍할 때는 그냥 쉬어도 돼.'],
+    '괜찮다': ['다행이다! 오늘 뭐 좋은 일 있었어?', '괜찮은 하루였구나. 뭔가 있었어?', '오, 괜찮다니 다행이다 🙂'],
+  };
+
+  const list = replies[label] || ['그렇구나.'];
+  const reply = list[Math.floor(Math.random() * list.length)];
+  const pose = (label === '힘들다' || label === '답답하다' || label === '불안하다') ? 'empathy' : 'default';
+
+  showTyping(pose, () => {
+    setBubble(reply + '\n조금 더 얘기해줄 수 있어?', pose);
+    state.currentPhase = 'chat';
+  });
+}
+
+// ══ 메시지 전송 ══
+function sendMsg() {
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  autoResize(input);
+
+  if (state.currentPhase === 'chat' || state.currentPhase === 'emotion') {
+    processChat(text);
+  }
+}
+
+function processChat(text) {
+  const emotion = state.selectedEmotion || '몰라';
+
+  // rule-based 공감 + 리프레임 + 행동 제안
+  const responses = getRiaResponse(emotion, text);
+  state.currentAction = responses.action;
+
+  showTyping('empathy', () => {
+    setBubble(responses.empathy + '\n\n' + responses.reframe, 'empathy');
+
+    setTimeout(() => {
+      showTyping('cheer', () => {
+        setBubble('오늘 딱 하나만 해봐.\n' + responses.action, 'cheer');
+        document.getElementById('resp-btns').style.display = 'flex';
+        state.currentPhase = 'response';
+        saveToHistory(emotion, text, responses.action);
+      });
+    }, 2200);
+  });
+}
+
+// ══ rule-based 응답 시스템 ══
+function getRiaResponse(emotion, text) {
+  const t = text.toLowerCase();
+
+  // 공감 풀
+  const empathyPool = {
+    '힘들다': [
+      '진짜 힘들었겠다. 그 마음 느껴져.',
+      '오늘 정말 많이 버텼구나.',
+      '말해줘서 고마워. 혼자 안고 있었던 거잖아.',
+    ],
+    '답답하다': [
+      '그 답답함, 진짜 숨막히지.',
+      '뭔가 안 풀릴 때 제일 지치잖아.',
+      '그 막막함, 충분히 이해해.',
+    ],
+    '불안하다': [
+      '불안한 마음, 내가 느껴져.',
+      '걱정되는 게 많구나. 여기 있어.',
+      '불안할 때가 제일 외롭지.',
+    ],
+    '아무 생각 없다': [
+      '그런 날도 있어. 비워두는 것도 괜찮아.',
+      '아무 생각 없을 때가 사실 가장 지친 거야.',
+      '멍한 게 나쁜 게 아니야.',
+    ],
+    '괜찮다': [
+      '잘 지냈다니 나도 기분 좋다!',
+      '괜찮은 날이면 충분해.',
+      '소소하게 좋은 하루였구나.',
+    ],
+  };
+
+  // 리프레임 풀
+  const reframePool = [
+    '지금 이걸 느끼는 게 이미 용감한 거야.',
+    '오늘 하루를 버텼다는 것만으로도 충분해.',
+    '완벽하지 않아도 괜찮아. 지금 여기 있는 것 자체가 시작이야.',
+    '모든 감정엔 이유가 있어. 네 마음이 그냥 무거운 게 아니야.',
+    '지금 느끼는 감정, 틀리지 않았어.',
+  ];
+
+  // 행동 제안 풀 (키워드 기반)
+  let action = '';
+  if (t.includes('잠') || t.includes('피곤') || t.includes('졸')) {
+    action = '오늘은 일찍 자봐. 10시에 눕기만 해도 돼. 🌙';
+  } else if (t.includes('먹') || t.includes('식사') || t.includes('밥')) {
+    action = '따뜻한 거 뭐라도 먹어. 굶지 마. 🍜';
+  } else if (t.includes('운동') || t.includes('산책')) {
+    action = '5분만 밖에 나가봐. 공기 마시는 것도 운동이야. 🚶';
+  } else if (t.includes('공부') || t.includes('시험') || t.includes('일') || t.includes('업무') || t.includes('직장')) {
+    action = '지금 하던 거 딱 10분만 더 하고 쉬어. 그것만 해도 돼. 📖';
+  } else if (t.includes('친구') || t.includes('관계') || t.includes('사람')) {
+    action = '오늘 연락하고 싶은 사람한테 "잘 지내?" 한 마디만 보내봐. 💬';
+  } else if (emotion === '괜찮다') {
+    action = '오늘 좋았던 거 하나, 머릿속에 담아둬. 그게 내일의 연료야. ✨';
+  } else {
+    const defaults = [
+      '따뜻한 물 한 잔 마시기 ☕',
+      '5분 동안 아무것도 안 하기. 진짜로. 🌿',
+      '좋아하는 노래 한 곡 틀기 🎵',
+      '스트레칭 딱 한 번만. 팔 위로 쭉 뻗기 🙆',
+      '창문 열고 바깥 바람 1분 맡기 🌬️',
+    ];
+    action = defaults[Math.floor(Math.random() * defaults.length)];
+  }
+
+  const empList = empathyPool[emotion] || empathyPool['힘들다'];
+  return {
+    empathy: empList[Math.floor(Math.random() * empList.length)],
+    reframe: reframePool[Math.floor(Math.random() * reframePool.length)],
+    action: action,
+  };
+}
+
+// ══ 응답 버튼 ══
+function respondYes() {
+  document.getElementById('resp-btns').style.display = 'none';
+  showDone(true);
+}
+function respondNo() {
+  document.getElementById('resp-btns').style.display = 'none';
+  showDone(false);
+}
+
+function showDone(didAgree) {
+  const titles = didAgree
+    ? ['오늘도 잘했어 🌿', '역시 믿었어 💪', '최고야, 진심으로 🌟']
+    : ['쉬는 것도 용기야 🌙', '오늘은 쉬어. 충분해.', '쉬어도 돼, 진짜로. 🌿'];
+  const msgs = didAgree
+    ? ['작은 것 하나 해내는 것,\n그게 쌓여서 내가 돼.', '한 걸음이면 충분해.\n내일도 같이 하자.', '오늘 이렇게 해낸 거야.']
+    : ['쉬는 것도 선택이야.\n내일 또 오면 돼.', '충전도 성장이야.\n잘 자고 와.', '억지로 하지 않아도 돼.\n리아는 여기 있어.'];
+
+  document.getElementById('done-title').textContent = titles[Math.floor(Math.random() * titles.length)];
+  document.getElementById('done-msg').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+  document.getElementById('done-action-text').innerHTML = state.currentAction;
+
+  if (!didAgree) {
+    document.getElementById('done-confirm-btn').style.display = 'none';
+  } else {
+    document.getElementById('done-confirm-btn').style.display = '';
+  }
+
+  showScreen('screen-done');
+}
+
+function confirmAction() {
+  setBubble('잘했어! 진짜로. 오늘 너 대단해 🌟', 'cheer');
+  showScreen('screen-main');
+  document.getElementById('resp-btns').style.display = 'none';
+}
+
+// ══ 말풍선 & 타이핑 ══
+function setBubble(text, pose) {
+  const el = document.getElementById('bubble-text');
+  el.innerHTML = text.replace(/\n/g, '<br>');
+  setPose(pose);
+}
+
+function showTyping(pose, cb) {
+  const el = document.getElementById('bubble-text');
+  el.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  setPose(pose);
+  setTimeout(cb, 1400);
+}
+
+const POSE_IMGS = {
+  default: 'ria_default.png',
+  empathy: 'ria_empathy.png',
+  cheer:   'ria_cheer.png',
+};
+function setPose(pose) {
+  const sprite = document.getElementById('ria-sprite');
+  sprite.src = POSE_IMGS[pose] || POSE_IMGS.default;
+}
+
+// ══ 히스토리 ══
+function saveToHistory(emotion, userText, action) {
+  const history = JSON.parse(localStorage.getItem('ria_history') || '[]');
+  const today = new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
+  history.unshift({ date: today, emotion, userText, action, ts: Date.now() });
+  if (history.length > 30) history.pop();
+  localStorage.setItem('ria_history', JSON.stringify(history));
+  updateStreak();
+  renderHistory();
+}
+
+function loadHistory() {
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('ria_history') || '[]');
+  const list = document.getElementById('history-list');
+  const toggle = document.getElementById('history-toggle');
+
+  if (history.length === 0) { toggle.style.display = 'none'; return; }
+  toggle.style.display = 'flex';
+
+  list.innerHTML = history.slice(0, 7).map(h => `
+    <div class="history-item">
+      <div class="h-date">${h.date}</div>
+      <div class="h-emotion">${h.emotion}</div>
+      <div style="color:#ccc;margin-top:3px;font-size:12px">${h.userText.slice(0, 60)}${h.userText.length > 60 ? '...' : ''}</div>
+    </div>
+  `).join('');
+}
+
+function toggleHistory() {
+  const list = document.getElementById('history-list');
+  list.classList.toggle('open');
+}
+
+function updateStreak() {
+  const history = JSON.parse(localStorage.getItem('ria_history') || '[]');
+  if (history.length === 0) return;
+
+  let streak = 1;
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i = 1; i < history.length; i++) {
+    const d = new Date(history[i].ts); d.setHours(0,0,0,0);
+    const prev = new Date(history[i-1].ts); prev.setHours(0,0,0,0);
+    if ((prev - d) === 86400000) streak++;
+    else break;
+  }
+  document.getElementById('streak-badge').textContent = `🌿 연속 ${streak}일`;
+}
+
+// ══ textarea 자동 높이 ══
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+// ══ 요금제 패널 토글 ══
+function togglePricing() {
+  const panel = document.getElementById('pricing-panel');
+  const btn = document.getElementById('pricing-btn');
+  const isOpen = panel.style.display !== 'none';
+  // 클릭 횟수 기록 (수요 검증 지표)
+  const count = parseInt(localStorage.getItem('ria_pricing_clicks') || '0') + 1;
+  localStorage.setItem('ria_pricing_clicks', count);
+  console.log('[may me] 요금제 클릭:', count, '회');
+  if (isOpen) {
+    panel.style.display = 'none';
+    btn.textContent = '요금제 보기';
+  } else {
+    panel.style.display = 'block';
+    btn.textContent = '요금제 닫기';
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+}
+
+// ══ 이메일 등록 ══
+function submitPricingEmail() {
+  const input = document.getElementById('pricing-email-input');
+  const val = input.value.trim();
+  if (!val || !val.includes('@')) {
+    input.style.borderColor = '#ff6b6b';
+    return;
+  }
+  saveEmail(val);
+  input.value = '';
+  input.style.borderColor = '';
+  document.getElementById('pricing-email-success').style.display = 'block';
+}
+
+function saveEmail(email) {
+  const list = JSON.parse(localStorage.getItem('ria_emails') || '[]');
+  if (!list.includes(email)) {
+    list.push(email);
+    localStorage.setItem('ria_emails', JSON.stringify(list));
+  }
+  console.log('[may me] 이메일 등록:', email, '| 총', list.length, '명');
+}
+</script>
+</body>
+</html>
