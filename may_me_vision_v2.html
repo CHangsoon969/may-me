@@ -87,7 +87,8 @@ section {
 #hero .section-inner {
   overflow: visible;
   justify-content: flex-start;
-  padding-top: 72px;
+  padding-top: 108px;
+  padding-bottom: 48px;
   gap: 0;
 }
 .hero-eyebrow {
@@ -113,7 +114,7 @@ section {
   opacity: 0; animation: fadeUp 0.8s 0.9s ease forwards;
 }
 
-/* 목업 컨테이너 — 폰 + PC 나란히 */
+/* 목업 컨테이너 */
 .mockup-row {
   display: flex;
   align-items: flex-end;
@@ -193,7 +194,6 @@ section {
   display: block;
   transition: transform 0.4s ease;
 }
-/* 방향 반전: JS로 .flip 클래스 토글 */
 .ria-on-phone.flip img { transform: scaleX(-1); }
 
 @keyframes wanderPhone {
@@ -205,7 +205,7 @@ section {
 }
 @keyframes charBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
 
-/* 말풍선 — 리아 머리 바로 위에 고정 */
+/* 말풍선 */
 .phone-bubble {
   position: absolute; z-index: 26;
   background: rgba(13,22,40,0.96);
@@ -219,7 +219,6 @@ section {
   animation: bubbleFade 10s ease-in-out infinite;
   pointer-events: none;
 }
-/* 말풍선 꼬리 — 아래쪽 중앙 */
 .phone-bubble::after {
   content: ''; position: absolute;
   bottom: -6px; left: 50%; transform: translateX(-50%);
@@ -298,7 +297,6 @@ section {
   font-size: 7px; color: var(--mint); font-weight: 700;
   margin-bottom: 2px;
 }
-/* 리아 아이콘 (맥 화면 우하단) */
 .mac-ria-icon {
   position: absolute; bottom: 8px; right: 8px;
   width: 40px; height: 40px;
@@ -310,7 +308,6 @@ section {
   object-fit: contain;
   image-rendering: pixelated;
 }
-/* 맥북 바닥 (힌지+받침) */
 .mac-base {
   width: 236px; height: 10px;
   background: linear-gradient(180deg, #1a2035 0%, #0d1525 100%);
@@ -348,239 +345,206 @@ section {
 .btn-main:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(78,205,196,0.42); }
 .btn-note { font-size: 12px; color: var(--text3); text-align: center; }
 
-/* ══════════ 02. 괜찮다고 했지만 ══════════ */
-#chapter1 {
+/* ══════════ 02. 감성 ══════════ */
+#emotion {
   background: radial-gradient(ellipse at 30% 50%, rgba(78,205,196,0.06) 0%, transparent 60%);
 }
-.chapter-tag {
+.emotion-tag {
   font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
   color: var(--mint); margin-bottom: 12px;
   opacity: 0; transition: all 0.7s;
 }
-.chapter-title {
+.emotion-title {
   font-size: clamp(26px, 7vw, 40px); font-weight: 900;
-  color: var(--text); line-height: 1.35; margin-bottom: 24px;
+  color: var(--text); line-height: 1.35; margin-bottom: 20px;
   opacity: 0; transform: translateY(16px); transition: all 0.7s 0.1s;
 }
-.poem {
-  display: flex; flex-direction: column; gap: 14px;
+.emotion-lines {
+  display: flex; flex-direction: column; gap: 10px;
   opacity: 0; transform: translateY(16px); transition: all 0.7s 0.2s;
 }
-.poem-block { display: flex; flex-direction: column; gap: 3px; }
-.poem-line {
-  font-size: 15px; color: var(--text2); line-height: 1.8;
+.emotion-line {
+  font-size: 15px; color: var(--text2); line-height: 1.85;
+  padding: 10px 14px;
+  border-left: 2px solid rgba(78,205,196,0.15);
 }
-.poem-line.em { color: var(--text); font-weight: 600; }
-.poem-line.quote {
-  color: var(--text3); font-style: italic;
-  padding-left: 12px; border-left: 2px solid var(--text3);
+.emotion-line.em {
+  color: var(--text); font-weight: 600;
+  border-left-color: var(--mint);
 }
-.poem-bridge {
-  margin-top: 6px; padding-top: 18px;
-  border-top: 1px solid rgba(78,205,196,0.1);
+.emotion-bridge {
+  margin-top: 20px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(78,205,196,0.08), rgba(110,181,255,0.06));
+  border: 1px solid rgba(78,205,196,0.18);
+  border-radius: 16px;
+  font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.65;
+  text-align: center;
   opacity: 0; transform: translateY(12px); transition: all 0.7s 0.4s;
 }
-.poem-bridge p { font-size: 15px; color: var(--text); line-height: 1.8; font-weight: 500; }
-.poem-bridge p span { color: var(--mint2); }
+.emotion-bridge span { color: var(--mint2); }
 
-/* ══════════ 03. may be ══════════ */
-#chapter2 {
+/* ══════════ 03. 사회적 증거 ══════════ */
+#social-proof {
   background:
     radial-gradient(ellipse at 70% 20%, rgba(110,181,255,0.09) 0%, transparent 50%),
     radial-gradient(ellipse at 20% 80%, rgba(78,205,196,0.06) 0%, transparent 50%);
 }
-.maybe-label {
-  font-size: clamp(36px, 10vw, 56px); font-weight: 900;
-  letter-spacing: 4px; color: var(--blue);
-  margin-bottom: 6px; line-height: 1;
+.proof-tag {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 6px;
   opacity: 0; transition: all 0.7s;
 }
-.maybe-title {
-  font-size: clamp(20px, 5vw, 30px); font-weight: 900;
-  line-height: 1.35; margin-bottom: 28px;
+.proof-title {
+  font-size: clamp(24px, 6.5vw, 36px); font-weight: 900;
+  line-height: 1.4; margin-bottom: 6px;
   opacity: 0; transform: translateY(16px); transition: all 0.7s 0.1s;
 }
-.maybe-title .hl {
-  background: linear-gradient(135deg, var(--mint2), var(--blue));
+.proof-title .hl {
+  background: linear-gradient(135deg, var(--blue), var(--mint));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-/* 카드형 maybe-cards */
-.maybe-cards {
+.proof-sub {
+  font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 16px;
+  opacity: 0; transition: all 0.7s 0.15s;
+}
+.proof-cards {
   display: flex; flex-direction: column; gap: 10px;
 }
-.maybe-card {
-  display: flex; align-items: center; gap: 14px;
-  background: rgba(110,181,255,0.05);
+.proof-card {
+  background: rgba(13,22,40,0.8);
   border: 1px solid rgba(110,181,255,0.12);
-  border-radius: 14px; padding: 14px 16px;
+  border-radius: 14px; padding: 12px 16px;
   position: relative; overflow: hidden;
   opacity: 0; transform: translateX(-20px); transition: all 0.55s;
 }
-.maybe-card-icon {
-  flex-shrink: 0;
-  width: 38px; height: 38px;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(110,181,255,0.08);
-  border-radius: 10px;
+.proof-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(110,181,255,0.2), transparent);
 }
-.maybe-card-text {
-  font-size: 14px; color: var(--text2); line-height: 1.7; flex: 1;
+.proof-num {
+  font-size: clamp(26px, 7vw, 38px); font-weight: 900; line-height: 1.1;
+  background: linear-gradient(135deg, var(--blue), var(--mint));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 4px;
 }
-.maybe-card-text strong { color: var(--text); font-weight: 700; }
-.maybe-card-text .dots { color: var(--text3); }
-.maybe-card-bar {
+.proof-pct {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+  color: var(--mint); margin-bottom: 5px;
+  opacity: 0.85;
+}
+.proof-desc {
+  font-size: 12px; color: var(--text2); line-height: 1.55;
+}
+.proof-desc strong { color: var(--text); font-weight: 700; }
+.proof-source {
+  font-size: 10px; color: var(--text3); margin-top: 3px;
+}
+.proof-bar {
   position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
   background: linear-gradient(180deg, var(--blue), var(--mint));
   border-radius: 3px 0 0 3px;
 }
-
-/* 최종 메시지 */
-.maybe-final {
-  margin-top: 16px;
-  padding: 20px 24px;
-  background: linear-gradient(135deg, rgba(78,205,196,0.1), rgba(110,181,255,0.08));
+.proof-cta {
+  margin-top: 8px; padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(78,205,196,0.08), rgba(110,181,255,0.06));
   border: 1px solid rgba(78,205,196,0.2);
-  border-radius: 16px;
-  font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.65;
-  text-align: center;
-  letter-spacing: -0.3px;
-  opacity: 0; transform: translateY(12px); transition: all 0.7s 0.4s;
+  border-radius: 12px;
+  font-size: 13px; color: var(--text); line-height: 1.65; text-align: center;
+  font-weight: 600; letter-spacing: -0.2px;
+  opacity: 0; transform: translateY(10px); transition: all 0.7s 0.6s;
 }
+.proof-cta span { color: var(--mint); }
 
-/* ══════════ 04. make me ══════════ */
-#chapter3 {
-  background: radial-gradient(ellipse at 50% 30%, rgba(78,205,196,0.08) 0%, transparent 55%);
+/* ══════════ 04. 핵심가치 + 기능 ══════════ */
+#features {
+  background: radial-gradient(ellipse at 50% 40%, rgba(78,205,196,0.08) 0%, transparent 60%);
 }
-.makeme-label {
-  font-size: clamp(36px, 10vw, 56px); font-weight: 900;
-  letter-spacing: 4px; color: var(--mint);
-  margin-bottom: 8px; line-height: 1;
+.feat-tag {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--mint); margin-bottom: 8px;
   opacity: 0; transition: all 0.7s;
 }
-.makeme-title {
+.feat-title {
   font-size: clamp(24px, 6vw, 36px); font-weight: 900;
-  line-height: 1.35; margin-bottom: 20px;
+  line-height: 1.35; margin-bottom: 6px;
   opacity: 0; transform: translateY(16px); transition: all 0.7s 0.1s;
 }
-.makeme-title .hl {
+.feat-title .hl {
   background: linear-gradient(135deg, var(--mint2), var(--blue));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.values { display: flex; flex-direction: column; gap: 0; }
-.value-item {
-  padding: 11px 0;
-  border-bottom: 1px solid rgba(78,205,196,0.08);
-  opacity: 0; transform: translateX(-16px); transition: all 0.6s;
+.feat-subtitle {
+  font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 20px;
+  opacity: 0; transition: all 0.7s 0.15s;
 }
-.value-item:last-child { border-bottom: none; }
-.value-num { font-size: 10px; color: var(--text3); letter-spacing: 1px; margin-bottom: 2px; }
-.value-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
-.value-title .code { color: var(--mint); font-family: monospace; }
-.value-desc { font-size: 12px; color: var(--text2); line-height: 1.65; }
 
-/* ══════════ 05. 리아 소개 ══════════ */
-#chapter4 {
-  background: radial-gradient(ellipse at 60% 60%, rgba(110,181,255,0.08) 0%, transparent 60%);
-  text-align: center;
-}
-.ria-section-label {
-  font-size: 11px; letter-spacing: 2px; color: var(--blue);
-  margin-bottom: 10px;
-  opacity: 0; transition: all 0.7s;
-}
-.ria-hero-name {
-  font-size: clamp(28px, 7vw, 44px); font-weight: 900;
-  color: var(--text); line-height: 1.35; margin-bottom: 16px;
-  opacity: 0; transform: translateY(16px); transition: all 0.7s 0.1s;
-}
-.ria-hero-name .hl {
-  background: linear-gradient(135deg, var(--mint2), var(--blue));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.ria-img-wrap {
-  margin: 0 auto 16px;
-  width: 220px; height: 220px;
-  position: relative;
+/* 리아 + 기능 카드 */
+.feat-ria-row {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
   opacity: 0; transition: all 0.8s 0.2s;
 }
-.ria-img-glow {
-  position: absolute; inset: -20px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(78,205,196,0.18) 0%, transparent 70%);
-  animation: glowPulse 3s ease-in-out infinite;
-}
-.ria-big-img {
-  width: 220px; height: 220px;
-  object-fit: contain;
+.feat-ria-img {
+  width: 80px; height: 80px; flex-shrink: 0;
+  object-fit: contain; image-rendering: pixelated;
+  filter: drop-shadow(0 4px 12px rgba(78,205,196,0.35));
   animation: charBob 3s ease-in-out infinite;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 8px 20px rgba(78,205,196,0.3));
 }
-.ria-cards { display: flex; flex-direction: column; gap: 8px; }
-.ria-card {
-  background: rgba(13,22,40,0.8);
-  border: 1px solid rgba(78,205,196,0.1);
-  border-radius: 14px; padding: 12px 16px;
-  text-align: left; position: relative; overflow: hidden;
-  opacity: 0; transform: translateY(14px); transition: all 0.6s;
+.feat-ria-intro {
+  flex: 1;
 }
-.ria-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(78,205,196,0.25), transparent);
+.feat-ria-name {
+  font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 4px;
 }
-.ria-card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.ria-card-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
-
-/* ══════════ 06. 비전 선언 ══════════ */
-#chapter5 {
-  background:
-    radial-gradient(ellipse at 50% 40%, rgba(78,205,196,0.09) 0%, transparent 55%),
-    radial-gradient(ellipse at 20% 80%, rgba(110,181,255,0.06) 0%, transparent 50%);
-  text-align: center;
-}
-.vision-tag {
-  font-size: 11px; letter-spacing: 3px; color: var(--mint);
-  margin-bottom: 16px;
-  opacity: 0; transition: all 0.7s;
-}
-.vision-quote {
-  font-size: clamp(20px, 4.5vw, 28px); font-weight: 900;
-  line-height: 1.55; max-width: 340px;
-  word-break: keep-all;
-  opacity: 0; transform: translateY(20px); transition: all 1s;
-}
-.vision-quote .hl {
-  background: linear-gradient(135deg, var(--mint2), var(--blue));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.vision-divider {
-  width: 40px; height: 1px; margin: 20px auto;
-  background: linear-gradient(90deg, transparent, var(--mint), transparent);
-  opacity: 0; transition: all 0.8s 0.4s;
-}
-.vision-body {
-  font-size: 15px; color: var(--text2); line-height: 1.9;
-  max-width: 320px; margin: 0 auto;
-  opacity: 0; transition: all 0.8s 0.5s;
-}
-.vision-founder {
-  margin-top: 20px; font-size: 14px; color: var(--mint);
-  font-weight: 700; letter-spacing: 0.5px;
-  opacity: 0; transition: all 0.8s 0.7s;
+.feat-ria-name span { color: var(--mint); }
+.feat-ria-desc {
+  font-size: 12px; color: var(--text2); line-height: 1.65;
 }
 
-/* ══════════ 07. 사전등록 ══════════ */
+.feat-items {
+  display: flex; flex-direction: column; gap: 0;
+}
+.feat-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(78,205,196,0.07);
+  opacity: 0; transform: translateX(-16px); transition: all 0.6s;
+}
+.feat-item:last-child { border-bottom: none; }
+.feat-icon {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  background: rgba(78,205,196,0.08);
+  border: 1px solid rgba(78,205,196,0.12);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.feat-text { flex: 1; }
+.feat-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.feat-name .code { color: var(--mint); font-family: monospace; }
+.feat-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+/* ══════════ 05. 사전등록 + CTA ══════════ */
 #register .section-inner {
   align-items: center;
+  justify-content: space-between;
+  padding-top: 80px;
+  padding-bottom: 52px;
 }
 #register {
   background: radial-gradient(ellipse at 50% 50%, rgba(78,205,196,0.09) 0%, rgba(110,181,255,0.05) 40%, transparent 65%);
   text-align: center;
 }
+.reg-vision {
+  font-size: 13px; color: var(--text2); line-height: 1.8;
+  font-style: italic; margin-bottom: 16px;
+  opacity: 0; transition: all 0.8s;
+}
+.reg-vision span { color: var(--mint2); font-style: normal; font-weight: 700; }
 .reg-tag {
   font-size: 11px; letter-spacing: 3px; color: var(--mint);
   margin-bottom: 12px;
@@ -681,27 +645,26 @@ footer {
 .vis { opacity: 1 !important; transform: translateY(0) !important; }
 .vis-x { opacity: 1 !important; transform: translateX(0) !important; }
 
-/* ── 리아 빼꼼 래퍼 (클리핑용) ── */
+/* ── 리아 빼꼼 ── */
 .ria-peek-clip {
   position: fixed;
   bottom: 0; right: 0;
   z-index: 300;
-  width: min(200px, 45vw);
-  height: min(220px, 50vw);
+  width: min(150px, 34vw);
+  height: min(165px, 38vw);
   overflow: hidden;
   pointer-events: none;
 }
-/* ── 리아 빼꼼 ── */
 .ria-peek {
   position: absolute;
   bottom: 0; right: 0;
-  width: min(160px, 38vw);
-  transform: translateY(min(220px, 50vw));
+  width: min(120px, 28vw);
+  transform: translateY(min(165px, 38vw));
   transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .ria-peek.show { transform: translateY(0); }
 .ria-peek img {
-  width: min(160px, 38vw);
+  width: min(120px, 28vw);
   image-rendering: pixelated;
   display: block;
   filter: drop-shadow(0 -4px 12px rgba(78,205,196,0.35));
@@ -714,7 +677,7 @@ footer {
 
 <nav>
   <div class="nav-logo">may me</div>
-  <a class="nav-cta" href="#register" onclick="scrollTo('register')">사전등록 →</a>
+  <a class="nav-cta" href="#register" onclick="snapTo(4)">사전등록 →</a>
 </nav>
 
 <!-- 리아 빼꼼 -->
@@ -779,7 +742,6 @@ footer {
               <div class="phone-icon"></div><div class="phone-icon"></div>
             </div>
           </div>
-          <!-- 리아 + 말풍선 -->
           <div class="ria-on-phone" id="ria-on-phone">
             <div class="phone-bubble">
               <div class="pb-name">리아</div>
@@ -798,159 +760,126 @@ footer {
     </div>
 
     <div class="hero-cta-wrap">
-      <button class="btn-main" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">사전등록하기 — 무료</button>
+      <button class="btn-main" onclick="snapTo(4)">사전등록하기 — 무료</button>
     </div>
-    <div style="height: 48px;"></div>
   </div>
 </section>
 
-<!-- ══ 02. 괜찮다고 했지만 ══ -->
-<section id="chapter1">
+<!-- ══ 02. 감성 ══ -->
+<section id="emotion">
   <div class="section-inner">
-    <div class="chapter-tag" id="c1-tag">FOR YOU</div>
-    <h2 class="chapter-title" id="c1-title">괜찮다고 했지만,<br>괜찮지 않았던 너에게</h2>
-    <div class="poem" id="c1-poem">
-      <div class="poem-block">
-        <div class="poem-line">잘하고 싶었어.</div>
-        <div class="poem-line">누구보다 열심히 했는데</div>
-        <div class="poem-line em">어느 순간 나 자신조차 믿지 못하게 됐어..</div>
-      </div>
-      <div class="poem-block">
-        <div class="poem-line">세상이 나를 원하지 않는 것 같고,</div>
-        <div class="poem-line em">내가 여기 있어도 되는 건지 전부 모르겠어..</div>
-      </div>
-      <div class="poem-block">
-        <div class="poem-line quote">"나 정도면 힘든 것도 아니야"</div>
-        <div class="poem-line">그 말을 삼키고 삼키다</div>
-        <div class="poem-line em">어느새 숨이 벅차..</div>
-      </div>
-      <div class="poem-block">
-        <div class="poem-line">좋아하는 걸 하라고 배웠는데</div>
-        <div class="poem-line">결국 세상은 다르게 말해..</div>
-        <div class="poem-line em">그래도 포기는 못하겠어...</div>
-      </div>
+    <div class="emotion-tag" id="em-tag">FOR YOU</div>
+    <h2 class="emotion-title" id="em-title">괜찮다고 했지만,<br>괜찮지 않았던 너에게</h2>
+    <div class="emotion-lines" id="em-lines">
+      <div class="emotion-line em">"나 정도면 힘든 것도 아니야"</div>
+      <div class="emotion-line">그 말을 삼키고 삼키다, 어느새 숨이 벅차..</div>
+      <div class="emotion-line em">좋아하는 걸 하라고 배웠는데<br>결국 세상은 다르게 말해..</div>
+      <div class="emotion-line">그래도 포기는 못하겠어.<br>그냥 잠깐, 쉬고 싶을 뿐이야.</div>
     </div>
-    <div class="poem-bridge" id="c1-bridge">
-      <p><span>그 무게, 혼자 짊어지지 않아도 돼.</span><br>여기, 네 얘기를 듣고 싶은 리아가 있어.</p>
+    <div class="emotion-bridge" id="em-bridge">
+      <span>그 무게, 혼자 짊어지지 않아도 돼.</span><br>
+      여기, 네 얘기를 듣고 싶은 리아가 있어.
     </div>
   </div>
 </section>
 
-<!-- ══ 03. may be ══ -->
-<section id="chapter2">
+<!-- ══ 03. 사회적 증거 ══ -->
+<section id="social-proof">
   <div class="section-inner">
-    <div class="maybe-label" id="c2-tag">MAY BE</div>
-    <h2 class="maybe-title" id="c2-title"><span class="hl">어쩌면 괜찮을지도..</span></h2>
-    <div class="maybe-cards" id="c2-lines">
-      <div class="maybe-card" id="mc1">
-        <div class="maybe-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4ecdc4" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v8"/><circle cx="12" cy="14" r="4" fill="rgba(78,205,196,0.1)"/><path d="M12 18v4"/><path d="M8 20h8"/></svg></div>
-        <div class="maybe-card-text">지금 이 고통이<br><strong>영원하지 않을 수도 있어</strong><span class="dots">..</span></div>
-        <div class="maybe-card-bar"></div>
+    <div class="proof-tag" id="sp-tag">THE REALITY</div>
+    <h2 class="proof-title" id="sp-title">지금 이 순간,<br><span class="hl">수백만 명이<br>혼자 버티고 있어.</span></h2>
+    <p class="proof-sub" id="sp-sub">힘들다고 말하지 못하는 사람들. 그 침묵이 숫자로 보여.</p>
+    <div class="proof-cards">
+      <div class="proof-card" id="pc1">
+        <div class="proof-bar"></div>
+        <div class="proof-num">320만 명</div>
+        <div class="proof-pct">전년 대비 +30% 증가</div>
+        <div class="proof-desc"><strong>정신질환 진료 인원</strong>이 매년 늘고 있어. 5년 전보다 훨씬 많아졌어.</div>
+        <div class="proof-source">국가 정신건강현황 보고서, 건강보험심사평가원 2023</div>
       </div>
-      <div class="maybe-card" id="mc2">
-        <div class="maybe-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6eb5ff" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polygon points="12 8 12 12 15 15" stroke="#6eb5ff" fill="none"/><line x1="12" y1="3" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="3" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21" y2="12"/></svg></div>
-        <div class="maybe-card-text">길을 잃은 게 아니라<br><strong>길을 개척하는 중</strong>이라고<span class="dots">..</span></div>
-        <div class="maybe-card-bar"></div>
+      <div class="proof-card" id="pc2">
+        <div class="proof-bar"></div>
+        <div class="proof-num">312만 명</div>
+        <div class="proof-pct">전체의 87.9% — 치료 미수진</div>
+        <div class="proof-desc">정신건강 문제를 겪으면서도 <strong>치료를 받지 않아.</strong> 혼자 버티는 게 기본값이 됐어.</div>
+        <div class="proof-source">정신건강실태조사, 국립정신건강센터·보건복지부</div>
       </div>
-      <div class="maybe-card" id="mc3">
-        <div class="maybe-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4ecdc4" stroke-width="1.8" stroke-linecap="round"><path d="M12 22c0 0-8-5-8-12a8 8 0 0 1 16 0c0 7-8 12-8 12z" fill="rgba(78,205,196,0.08)"/><path d="M12 10v4"/><circle cx="12" cy="16" r="1" fill="#4ecdc4"/></svg></div>
-        <div class="maybe-card-text">넘어진 자리가 실패가 아니라<br><strong>쉬어가도 된다는 신호</strong>일지도<span class="dots">..</span></div>
-        <div class="maybe-card-bar"></div>
+      <div class="proof-card" id="pc3">
+        <div class="proof-bar"></div>
+        <div class="proof-num">51만 명</div>
+        <div class="proof-pct">청년 전체의 5.2% — 2년 만에 2배</div>
+        <div class="proof-desc">청년 20명 중 1명이 <strong>고립·은둔 상태</strong>. 2년 만에 2배 이상 급증했어.</div>
+        <div class="proof-source">청년의 삶 실태조사, 보건복지부 2024</div>
       </div>
     </div>
-    <div class="maybe-final" id="c2-final">
-      어쩌면, 너는<br>생각보다 괜찮은 사람일지도.
+    <div class="proof-cta" id="sp-cta">
+      <span>may me</span>는 이 침묵을 깨고 싶어.<br>판단 없이, 언제든, 네 편으로.
     </div>
   </div>
 </section>
 
-<!-- ══ 04. make me ══ -->
-<section id="chapter3">
+<!-- ══ 04. 핵심가치 + 기능 ══ -->
+<section id="features">
   <div class="section-inner">
-    <div class="makeme-label" id="c3-tag">MAKE ME</div>
-    <h2 class="makeme-title" id="c3-title">그래도,<br><span class="hl">이렇게 살아보자.</span></h2>
-    <div class="values">
-      <div class="value-item" id="v1">
-        <div class="value-num">01</div>
-        <div class="value-title">이상을 꿈꾸는 것</div>
-        <div class="value-desc">현실이 아무리 무거워도, 이상을 꿈꾸자.</div>
+    <div class="feat-tag" id="ft-tag">MEET RIA</div>
+    <h2 class="feat-title" id="ft-title">오늘 하루,<br><span class="hl">리아한테 털어놔봐.</span></h2>
+    <p class="feat-subtitle" id="ft-sub">편견 없이 들어주는 친구가 여기 있어.</p>
+
+    <div class="feat-ria-row" id="ft-ria">
+      <img class="feat-ria-img" src="ria_v2_2t.png" alt="리아">
+      <div class="feat-ria-intro">
+        <div class="feat-ria-name">리아 <span>Ria</span></div>
+        <div class="feat-ria-desc">좋아요도 팔로워도 없는 공간.<br>그냥 네 얘기만 하면 돼.</div>
       </div>
-      <div class="value-item" id="v2">
-        <div class="value-num">02</div>
-        <div class="value-title">스스로 답을 찾는 것</div>
-        <div class="value-desc">답은 누가 주지 않아. 네가 찾을 수 있어. 옆에서 도와줄게.</div>
+    </div>
+
+    <div class="feat-items">
+      <div class="feat-item" id="fi1">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ecdc4" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.5" stroke-width="3"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">리아가 먼저 말 걸어</div>
+          <div class="feat-desc">앱을 열지 않아도 돼. 홈 화면에서 리아가 먼저 다가와.</div>
+        </div>
       </div>
-      <div class="value-item" id="v3">
-        <div class="value-num">03</div>
-        <div class="value-title">작은 것부터 시작하는 용기</div>
-        <div class="value-desc">거창하지 않아도 돼. 오늘 딱 하나만.</div>
+      <div class="feat-item" id="fi2">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6eb5ff" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">오늘 하루를 같이 정리해</div>
+          <div class="feat-desc">털어놓으면 리아가 감정을 읽고 함께 기록해줘.</div>
+        </div>
       </div>
-      <div class="value-item" id="v4">
-        <div class="value-num">04</div>
-        <div class="value-title"><span class="code">hello, world</span></div>
-        <div class="value-desc">나도, 우리도, 리아도. 혼자가 아니야.</div>
+      <div class="feat-item" id="fi3">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ecdc4" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">딱 하나, 작은 목표</div>
+          <div class="feat-desc">거창하지 않아도 돼. 오늘 딱 하나만 같이 해보자.</div>
+        </div>
       </div>
-      <div class="value-item" id="v5">
-        <div class="value-num">05</div>
-        <div class="value-title">성장의 길은 하나가 아니야</div>
-        <div class="value-desc">돌아가도, 멈춰도 괜찮아. 넘어지더라도 결국 우린 넘어설 거니까.</div>
+      <div class="feat-item" id="fi4">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6eb5ff" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="feat-text">
+          <div class="feat-name">여기선 편견 없어</div>
+          <div class="feat-desc">못난 모습도, 부끄러운 얘기도. 어떤 말을 해도 괜찮아. 리아는 네 편이니까.</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ 05. 리아 소개 ══ -->
-<section id="chapter4">
-  <div class="section-inner">
-    <div class="ria-section-label" id="c4-tag">MEET RIA</div>
-    <h2 class="ria-hero-name" id="c4-title">당신과,<br><span class="hl">우리의 작은 히어로.</span></h2>
-    <div class="ria-img-wrap" id="c4-img">
-      <div class="ria-img-glow"></div>
-      <img class="ria-big-img" src="ria_v2_2t.png" alt="리아">
-    </div>
-    <div class="ria-cards">
-      <div class="ria-card" id="rc1">
-        <div class="ria-card-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ecdc4" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.5" stroke-width="3"/></svg>핸드폰을 켜면 리아가 먼저 말을 건다</div>
-        <div class="ria-card-desc">앱을 열지 않아도 돼. 리아가 홈 화면을 돌아다니며 오늘 하루를 물어봐.</div>
-      </div>
-      <div class="ria-card" id="rc2">
-        <div class="ria-card-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6eb5ff" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px"><path d="M12 22c5.5-3 9-7 9-12A9 9 0 0 0 3 10c0 5 3.5 9 9 12z"/><path d="M12 8v4l2 2"/></svg>감정을 듣고, 일상에 함께하고, 성장을 도와</div>
-        <div class="ria-card-desc">무조건 괜찮다고 하지 않아. 솔직하게, 진짜 네 편으로 있을거야.</div>
-      </div>
-      <div class="ria-card" id="rc3">
-        <div class="ria-card-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ecdc4" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>리아도 아직 성장 중이야</div>
-        <div class="ria-card-desc">완성된 AI가 아니야. 너와 함께 걸어가면서, 리아도 변해가.</div>
-      </div>
-      <div class="ria-card" id="rc4">
-        <div class="ria-card-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6eb5ff" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>네 이야기는 우리 사이에만</div>
-        <div class="ria-card-desc">광고에 쓰이지 않아. 판단하지 않아. 그냥 들을게.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ 06. 비전 선언 ══ -->
-<section id="chapter5">
-  <div class="section-inner" style="text-align:center; align-items:center;">
-    <div class="vision-tag" id="c5-tag">VISION</div>
-    <div class="vision-quote" id="c5-quote">
-      "길을 잃은 사람에게,<br><span class="hl">다시 이상을 꿈꿀 수 있도록."</span>
-    </div>
-    <div class="vision-divider" id="c5-div"></div>
-    <div class="vision-body" id="c5-body">
-      내가 사랑하는 사람이 길을 잃었을 때,<br>
-      곁에서 어떤 도움을 줄지 몰라<br>
-      도움이라는 가면으로 결국엔 상처 줬던 무력감...<br><br>
-      이 너덜너덜한 마음으로<br>
-      may me를 만들고 있습니다.
-    </div>
-    <div class="vision-founder" id="c5-founder">- 첫번째 리아의 친구 -</div>
-  </div>
-</section>
-
-<!-- ══ 07. 사전등록 ══ -->
+<!-- ══ 05. 사전등록 + CTA ══ -->
 <section id="register">
   <div class="section-inner">
+    <div class="reg-vision" id="r-vision">
+      "<span>길을 잃은 사람에게, 다시 이상을 꿈꿀 수 있도록.</span>"
+    </div>
     <div class="reg-tag" id="r-tag">COMING SOON</div>
     <h2 class="reg-title" id="r-title">리아를 제일 먼저<br>만나고 싶어?</h2>
     <p class="reg-sub" id="r-sub">
@@ -963,10 +892,10 @@ footer {
     </div>
     <div class="email-form" id="email-form">
       <input class="email-input" id="email-input" type="email" placeholder="이메일을 입력해줘">
-      <button class="reg-btn" onclick="submitEmail()">리아 출시 알림 받기</button>
-      <div class="reg-privacy">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:0.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <span>출시 알림 외 어떤 용도로도 사용하지 않아요. 언제든 수신 거부 가능해요.</span>
+      <button class="reg-btn" onclick="submitEmail()">리아 첫 번째 친구 되기</button>
+      <div class="reg-privacy" style="justify-content:center; text-align:center;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:0.5;margin-top:2px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>스팸 없음 · 언제든 취소 가능 · 출시 알림 외 사용 안 함</span>
       </div>
     </div>
     <div class="reg-success" id="reg-success">
@@ -974,9 +903,8 @@ footer {
       <div class="success-title">등록됐어!</div>
       <div class="success-msg">리아가 세상에 나오면<br>제일 먼저 알려줄게.<br>기다려줘서 고마워 💙</div>
       <button class="btn-back" onclick="snapTo(0)">may me 더 알아보기 →</button>
-      <div class="success-count">지금 <span id="success-num">248</span>명이 함께 기다리고 있어</div>
+      <div class="success-count">지금 <span id="success-num">0</span>명이 함께 기다리고 있어</div>
     </div>
-    <div style="height: 48px;"></div>
   </div>
 </section>
 
@@ -991,8 +919,8 @@ const sections = Array.from(document.querySelectorAll('section'));
 let isSnapping = false;
 let currentIdx = 0;
 
-// 빼꼼 리아: chapter4(리아소개, index=4)와 register(index=6)에서만 등장
-const PEEK_SECTIONS = new Set([6]);
+// 빼꼼 리아: register(index=4)에서만 등장
+const PEEK_SECTIONS = new Set([4]);
 let riaPeekTimer = null;
 function triggerRiaPeek(idx) {
   const peek = document.getElementById('ria-peek');
@@ -1033,17 +961,15 @@ window.addEventListener('wheel', (e) => {
   }, 30);
 }, { passive: false });
 
-// 모바일 터치 스와이프 (딜레이 없이 즉시 반응)
+// 모바일 터치 스와이프
 let touchStartY = 0;
-let touchMoved = false;
 window.addEventListener('touchstart', (e) => {
   touchStartY = e.touches[0].clientY;
-  touchMoved = false;
 }, { passive: true });
 window.addEventListener('touchend', (e) => {
   if (isSnapping) return;
   const dy = touchStartY - e.changedTouches[0].clientY;
-  if (Math.abs(dy) < 40) return; // 너무 짧은 스와이프 무시
+  if (Math.abs(dy) < 40) return;
   if (dy > 0) snapTo(currentIdx + 1);
   else snapTo(currentIdx - 1);
 }, { passive: true });
@@ -1053,7 +979,6 @@ let lastScrollIdx = 0;
 window.addEventListener('scroll', () => {
   const h = document.documentElement.scrollHeight - window.innerHeight;
   if (h > 0) updateProgress(window.scrollY / h);
-  // 현재 섹션 인덱스 업데이트 (CSS 스냅용)
   const mid = window.innerHeight / 2;
   sections.forEach((s, i) => {
     const r = s.getBoundingClientRect();
@@ -1077,28 +1002,27 @@ function show(id, cls, delay = 0) {
   }
 }
 function reveal() {
-  show('c1-tag','vis'); show('c1-title','vis',80); show('c1-poem','vis',160); show('c1-bridge','vis',300);
-  show('c2-tag','vis'); show('c2-title','vis',80); show('mc1','vis-x',160); show('mc2','vis-x',280); show('mc3','vis-x',400); show('c2-final','vis',560);
-  show('c3-tag','vis'); show('c3-title','vis',80);
-  show('v1','vis-x',0); show('v2','vis-x',100); show('v3','vis-x',200); show('v4','vis-x',300); show('v5','vis-x',400);
-  show('c4-tag','vis'); show('c4-title','vis',80); show('c4-img','vis',160);
-  show('rc1','vis',0); show('rc2','vis',120); show('rc3','vis',240); show('rc4','vis',360);
-  show('c5-tag','vis'); show('c5-quote','vis',80); show('c5-div','vis',300); show('c5-body','vis',400); show('c5-founder','vis',560);
-  show('r-tag','vis'); show('r-title','vis',80); show('r-sub','vis',160); show('r-counter','vis',100); show('email-form','vis',260);
+  // 감성
+  show('em-tag','vis'); show('em-title','vis',80); show('em-lines','vis',160); show('em-bridge','vis',320);
+  // 사회적 증거
+  show('sp-tag','vis'); show('sp-title','vis',80); show('sp-sub','vis',120);
+  show('pc1','vis-x',160); show('pc2','vis-x',280); show('pc3','vis-x',400); show('sp-cta','vis',520);
+  // 핵심가치+기능
+  show('ft-tag','vis'); show('ft-title','vis',80); show('ft-sub','vis',120); show('ft-ria','vis',200);
+  show('fi1','vis-x',0); show('fi2','vis-x',100); show('fi3','vis-x',200); show('fi4','vis-x',300);
+  // 사전등록
+  show('r-vision','vis'); show('r-tag','vis',80); show('r-title','vis',160); show('r-sub','vis',240);
+  show('r-counter','vis',120); show('email-form','vis',300);
 }
 
-// 목업 리아 방향 반전 (wanderPhone 애니메이션 keyframe 방향 기반)
-// 0→25%: left 12→45 (오른쪽) → 정방향
-// 25→50%: left 45→20 (왼쪽) → 반전
-// 50→75%: left 20→50 (오른쪽) → 정방향
-// 75→100%: left 50→12 (왼쪽) → 반전
+// 목업 리아 방향 반전
 const riaPhone = document.getElementById('ria-on-phone');
 if (riaPhone) {
   const flipSchedule = [
-    { at: 0,    flip: false },  // 0%: 오른쪽
-    { at: 2500, flip: true  },  // 25%: 왼쪽
-    { at: 5000, flip: false },  // 50%: 오른쪽
-    { at: 7500, flip: true  },  // 75%: 왼쪽
+    { at: 0,    flip: false },
+    { at: 2500, flip: true  },
+    { at: 5000, flip: false },
+    { at: 7500, flip: true  },
   ];
   function scheduleFlips() {
     flipSchedule.forEach(({ at, flip }) => {
@@ -1109,7 +1033,7 @@ if (riaPhone) {
     });
   }
   scheduleFlips();
-  setInterval(scheduleFlips, 10000); // 10s 주기 반복
+  setInterval(scheduleFlips, 10000);
 }
 
 // 말풍선 순환
@@ -1123,7 +1047,7 @@ setInterval(() => {
   setTimeout(() => { el.textContent = bubbles[bi]; el.style.opacity = '1'; el.style.transition = 'opacity 0.4s'; }, 300);
 }, 4000);
 
-// 카운터
+// 카운터 애니메이션
 let counted = false;
 function animCounter(el, target) {
   let n = Math.max(0, target - 40);
@@ -1149,7 +1073,6 @@ const FORMS_EMAIL_FIELD = 'entry.1153478181';
 
 let regCount = 0;
 
-// 카운트 fetch 함수 (주기적 동기화)
 function fetchCount() {
   fetch(APPS_SCRIPT_URL)
     .then(r => r.json())
@@ -1164,7 +1087,6 @@ function fetchCount() {
     .catch(() => {});
 }
 
-// 페이지 로드 즉시 + 30초마다 동기화
 fetchCount();
 setInterval(fetchCount, 30000);
 
@@ -1176,12 +1098,10 @@ function submitEmail() {
     return;
   }
 
-  // Google Forms에 제출 (no-cors로 CORS 우회)
   const formData = new FormData();
   formData.append(FORMS_EMAIL_FIELD, email);
   fetch(FORMS_ACTION, { method: 'POST', mode: 'no-cors', body: formData });
 
-  // UI 즉시 업데이트
   regCount++;
   document.getElementById('counter-num').textContent = regCount;
   document.getElementById('success-num').textContent = regCount - 1;
