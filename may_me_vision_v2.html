@@ -647,6 +647,18 @@ section {
 .success-emoji { font-size: 52px; }
 .success-title { font-size: 22px; font-weight: 800; color: var(--text); }
 .success-msg { font-size: 14px; color: var(--text2); line-height: 1.9; text-align: center; max-width: 260px; }
+.btn-back {
+  margin-top: 8px;
+  background: transparent;
+  border: 1.5px solid rgba(78,205,196,0.4);
+  color: var(--mint);
+  font-size: 14px; font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-back:hover { background: rgba(78,205,196,0.1); border-color: var(--mint); }
 .success-count {
   background: rgba(13,22,40,0.8);
   border: 1px solid rgba(78,205,196,0.15);
@@ -962,6 +974,7 @@ footer {
       <div class="success-title">등록됐어!</div>
       <div class="success-msg">리아가 세상에 나오면<br>제일 먼저 알려줄게.<br>기다려줘서 고마워 💙</div>
       <div class="success-count">지금 <span id="success-num">248</span>명이 함께 기다리고 있어</div>
+      <button class="btn-back" onclick="snapTo(0)">may me 더 알아보기 →</button>
     </div>
     <div style="height: 48px;"></div>
   </div>
