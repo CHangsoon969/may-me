@@ -1123,7 +1123,7 @@ function animCounter(el, target) {
 }
 const obs = new IntersectionObserver(e => {
   if (e[0].isIntersecting && !counted) {
-    animCounter(document.getElementById('counter-num'), regCount || 247);
+    animCounter(document.getElementById('counter-num'), regCount);
     counted = true;
   }
 });
@@ -1136,17 +1136,24 @@ const FORMS_EMAIL_FIELD = 'entry.1153478181';
 
 let regCount = 0;
 
-// 페이지 로드 시 실제 카운트 가져오기
-fetch(APPS_SCRIPT_URL)
-  .then(r => r.json())
-  .then(data => {
-    regCount = data.count || 0;
-    // 아직 카운터 애니메이션이 실행 안 됐으면 숫자 업데이트
-    if (!counted) {
-      document.getElementById('counter-num').textContent = regCount;
-    }
-  })
-  .catch(() => { regCount = 247; });
+// 카운트 fetch 함수 (주기적 동기화)
+function fetchCount() {
+  fetch(APPS_SCRIPT_URL)
+    .then(r => r.json())
+    .then(data => {
+      const newCount = data.count || 0;
+      if (newCount !== regCount) {
+        regCount = newCount;
+        const el = document.getElementById('counter-num');
+        if (el) el.textContent = regCount;
+      }
+    })
+    .catch(() => {});
+}
+
+// 페이지 로드 즉시 + 30초마다 동기화
+fetchCount();
+setInterval(fetchCount, 30000);
 
 function submitEmail() {
   const email = document.getElementById('email-input').value.trim();
