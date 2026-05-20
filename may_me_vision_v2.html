@@ -1119,14 +1119,28 @@ function animCounter(el, target) {
 }
 const obs = new IntersectionObserver(e => {
   if (e[0].isIntersecting && !counted) {
-    animCounter(document.getElementById('counter-num'), 247);
+    animCounter(document.getElementById('counter-num'), regCount || 247);
     counted = true;
   }
 });
 obs.observe(document.getElementById('r-counter'));
 
-// 사전등록
-let regCount = 247;
+// 사전등록 — Google Forms + Apps Script 연동
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOKFN0jPdUkUdNs5QwEYfgFkgRvcdGQE6GnDWx2Sf92djuFJLQ5lzhPTcOFbU2Cerp/exec';
+const FORMS_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSfQI6IkFnkSJVTKVmUt063yqQk73gjLbKWug3NAItD7Lad-kg/formResponse';
+const FORMS_EMAIL_FIELD = 'entry.1153478181';
+
+let regCount = 0;
+
+// 페이지 로드 시 실제 카운트 가져오기
+fetch(APPS_SCRIPT_URL)
+  .then(r => r.json())
+  .then(data => {
+    regCount = data.count || 0;
+    document.getElementById('counter-num').textContent = regCount;
+  })
+  .catch(() => { regCount = 247; });
+
 function submitEmail() {
   const email = document.getElementById('email-input').value.trim();
   if (!email || !email.includes('@')) {
@@ -1134,15 +1148,17 @@ function submitEmail() {
     setTimeout(() => document.getElementById('email-input').style.borderColor = '', 1500);
     return;
   }
+
+  // Google Forms에 제출 (no-cors로 CORS 우회)
+  const formData = new FormData();
+  formData.append(FORMS_EMAIL_FIELD, email);
+  fetch(FORMS_ACTION, { method: 'POST', mode: 'no-cors', body: formData });
+
+  // UI 즉시 업데이트
   regCount++;
   document.getElementById('success-num').textContent = regCount;
   document.getElementById('email-form').style.display = 'none';
   document.getElementById('reg-success').classList.add('show');
-  try {
-    const emails = JSON.parse(localStorage.getItem('mayme_emails') || '[]');
-    emails.push({ email, date: new Date().toISOString() });
-    localStorage.setItem('mayme_emails', JSON.stringify(emails));
-  } catch(e) {}
 }
 
 setTimeout(reveal, 100);
