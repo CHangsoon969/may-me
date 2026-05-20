@@ -638,6 +638,7 @@ section {
 .reg-success {
   display: none; flex-direction: column; align-items: center; gap: 16px;
   width: 100%; max-width: 360px;
+  margin: 0 auto; text-align: center;
 }
 .reg-success.show { display: flex; animation: fadeUp 0.5s ease; }
 .success-emoji { font-size: 52px; }
@@ -1137,7 +1138,10 @@ fetch(APPS_SCRIPT_URL)
   .then(r => r.json())
   .then(data => {
     regCount = data.count || 0;
-    document.getElementById('counter-num').textContent = regCount;
+    // 아직 카운터 애니메이션이 실행 안 됐으면 숫자 업데이트
+    if (!counted) {
+      document.getElementById('counter-num').textContent = regCount;
+    }
   })
   .catch(() => { regCount = 247; });
 
