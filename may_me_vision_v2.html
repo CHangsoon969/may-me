@@ -181,13 +181,13 @@ section {
 
 /* 리아 캐릭터 + 말풍선 묶음 */
 .ria-on-phone {
-  position: absolute; width: 64px; height: 64px;
+  position: absolute; width: 48px; height: 48px;
   animation: wanderPhone 10s ease-in-out infinite;
   z-index: 20; pointer-events: none;
   filter: drop-shadow(0 4px 10px rgba(78,205,196,0.55));
 }
 .ria-on-phone img {
-  width: 64px; height: 64px;
+  width: 48px; height: 48px;
   object-fit: contain;
   image-rendering: pixelated;
   display: block;
@@ -665,32 +665,32 @@ footer {
 .vis { opacity: 1 !important; transform: translateY(0) !important; }
 .vis-x { opacity: 1 !important; transform: translateX(0) !important; }
 
-/* ── 리아 빼꼼 ── */
-.ria-peek {
+/* ── 리아 빼꼼 래퍼 (클리핑용) ── */
+.ria-peek-clip {
   position: fixed;
   bottom: 0; right: 0;
   z-index: 300;
-  width: 120px; height: 120px;
-  transform: translateY(200px);
-  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
-  pointer-events: none;
+  width: 180px; height: 200px;
   overflow: hidden;
+  pointer-events: none;
 }
-.ria-peek.show {
-  transform: translateY(0);
-  overflow: visible;
-}
-.ria-peek img {
+/* ── 리아 빼꼼 ── */
+.ria-peek {
   position: absolute;
   bottom: 0; right: 0;
+  width: 160px;
+  transform: translateY(100%);
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ria-peek.show { transform: translateY(0); }
+.ria-peek img {
   width: 160px;
   image-rendering: pixelated;
   display: block;
   filter: drop-shadow(0 -4px 12px rgba(78,205,196,0.35));
-  border-radius: 0;
 }
 @media (max-width: 480px) {
-  .ria-peek { width: 80px; height: 80px; }
+  .ria-peek-clip { width: 120px; height: 150px; }
   .ria-peek img { width: 110px; }
 }
 </style>
@@ -705,8 +705,10 @@ footer {
 </nav>
 
 <!-- 리아 빼꼼 -->
-<div class="ria-peek" id="ria-peek">
-  <img src="ria_v2_3t.png" alt="리아 빼꼼">
+<div class="ria-peek-clip">
+  <div class="ria-peek" id="ria-peek">
+    <img src="ria_v2_3t.png" alt="리아 빼꼼">
+  </div>
 </div>
 
 <!-- ══ 01. 히어로 ══ -->
@@ -976,7 +978,7 @@ let isSnapping = false;
 let currentIdx = 0;
 
 // 빼꼼 리아: chapter4(리아소개, index=4)와 register(index=6)에서만 등장
-const PEEK_SECTIONS = new Set([4, 6]);
+const PEEK_SECTIONS = new Set([6]);
 let riaPeekTimer = null;
 function triggerRiaPeek(idx) {
   const peek = document.getElementById('ria-peek');
