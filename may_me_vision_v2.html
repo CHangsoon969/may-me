@@ -946,7 +946,7 @@ footer {
       먼저 기다려준 사람에게 제일 먼저 알려줄게.
     </p>
     <div class="counter-wrap" id="r-counter">
-      <div class="counter-num" id="counter-num">247</div>
+      <div class="counter-num" id="counter-num">0</div>
       <div class="counter-label">명이 먼저 기다리고 있어요</div>
     </div>
     <div class="email-form" id="email-form">
@@ -1170,7 +1170,8 @@ function submitEmail() {
 
   // UI 즉시 업데이트
   regCount++;
-  document.getElementById('success-num').textContent = regCount;
+  document.getElementById('counter-num').textContent = regCount;
+  document.getElementById('success-num').textContent = regCount - 1;
   document.getElementById('email-form').style.display = 'none';
   document.getElementById('reg-success').classList.add('show');
 }
