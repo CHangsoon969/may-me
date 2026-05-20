@@ -670,7 +670,8 @@ footer {
   position: fixed;
   bottom: 0; right: 0;
   z-index: 300;
-  width: 200px; height: 220px;
+  width: min(200px, 45vw);
+  height: min(220px, 50vw);
   overflow: hidden;
   pointer-events: none;
 }
@@ -678,21 +679,16 @@ footer {
 .ria-peek {
   position: absolute;
   bottom: 0; right: 0;
-  width: 160px;
-  transform: translateY(220px);
+  width: min(160px, 38vw);
+  transform: translateY(min(220px, 50vw));
   transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .ria-peek.show { transform: translateY(0); }
 .ria-peek img {
-  width: 160px;
+  width: min(160px, 38vw);
   image-rendering: pixelated;
   display: block;
   filter: drop-shadow(0 -4px 12px rgba(78,205,196,0.35));
-}
-@media (max-width: 480px) {
-  .ria-peek-clip { width: 140px; height: 170px; }
-  .ria-peek { transform: translateY(170px); }
-  .ria-peek img { width: 120px; }
 }
 </style>
 </head>
