@@ -90,9 +90,10 @@ section {
   opacity: 0; animation: fadeUp 0.8s 0.3s ease forwards;
 }
 .hero-title {
-  font-size: clamp(28px, 7vw, 44px);
+  font-size: clamp(24px, 6vw, 40px);
   font-weight: 900; line-height: 1.35; color: var(--text);
   margin-bottom: 12px;
+  word-break: keep-all;
   opacity: 0; animation: fadeUp 0.8s 0.6s ease forwards;
 }
 .hero-title .hl {
@@ -109,12 +110,18 @@ section {
 /* 목업 컨테이너 — 폰 + PC 나란히 */
 .mockup-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  gap: 16px;
-  margin: 0 auto 28px;
+  gap: 12px;
+  margin: 0 auto 20px;
   width: 100%;
+  max-width: 460px;
   opacity: 0; animation: fadeUp 1s 1.1s ease forwards;
+  transform: scale(0.85);
+  transform-origin: center bottom;
+}
+@media (min-width: 600px) {
+  .mockup-row { transform: scale(1); }
 }
 
 /* 폰 목업 */
@@ -232,7 +239,7 @@ section {
 /* ── 맥북 목업 ── */
 .mac-wrap {
   position: relative; flex-shrink: 0;
-  width: 280px;
+  width: 220px;
 }
 .mac-glow {
   position: absolute; inset: -20px; border-radius: 20px;
@@ -240,7 +247,7 @@ section {
   animation: glowPulse 3s ease-in-out infinite;
 }
 .mac-screen-wrap {
-  width: 280px; height: 178px;
+  width: 220px; height: 140px;
   background: #0a1220;
   border: 2px solid rgba(110,181,255,0.2);
   border-radius: 10px 10px 0 0;
@@ -295,7 +302,7 @@ section {
 }
 /* 맥북 바닥 (힌지+받침) */
 .mac-base {
-  width: 300px; height: 10px;
+  width: 236px; height: 10px;
   background: linear-gradient(180deg, #1a2035 0%, #0d1525 100%);
   border: 1px solid rgba(110,181,255,0.1);
   border-top: none;
@@ -653,20 +660,25 @@ footer {
   position: fixed;
   bottom: 0; right: 0;
   z-index: 300;
-  width: 150px; height: 150px;
+  width: 120px; height: 120px;
   transform: translateY(100%);
   transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
 }
 .ria-peek.show { transform: translateY(0); }
 .ria-peek img {
   position: absolute;
   bottom: 0; right: 0;
-  width: 200px;
+  width: 160px;
   image-rendering: pixelated;
   display: block;
   filter: drop-shadow(0 -4px 12px rgba(78,205,196,0.35));
+  border-radius: 0;
+}
+@media (max-width: 480px) {
+  .ria-peek { width: 80px; height: 80px; }
+  .ria-peek img { width: 110px; }
 }
 </style>
 </head>
@@ -950,13 +962,19 @@ const sections = Array.from(document.querySelectorAll('section'));
 let isSnapping = false;
 let currentIdx = 0;
 
+// 빼꼼 리아: chapter4(리아소개, index=4)와 register(index=6)에서만 등장
+const PEEK_SECTIONS = new Set([4, 6]);
 let riaPeekTimer = null;
-function triggerRiaPeek() {
+function triggerRiaPeek(idx) {
   const peek = document.getElementById('ria-peek');
   if (!peek) return;
   clearTimeout(riaPeekTimer);
-  peek.classList.add('show');
-  riaPeekTimer = setTimeout(() => peek.classList.remove('show'), 2000);
+  if (PEEK_SECTIONS.has(idx)) {
+    peek.classList.add('show');
+    riaPeekTimer = setTimeout(() => peek.classList.remove('show'), 3000);
+  } else {
+    peek.classList.remove('show');
+  }
 }
 
 function snapTo(idx) {
@@ -966,7 +984,7 @@ function snapTo(idx) {
   sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
   updateProgress(idx / (sections.length - 1));
   reveal();
-  triggerRiaPeek();
+  triggerRiaPeek(idx);
   setTimeout(() => { isSnapping = false; }, 800);
 }
 
@@ -986,6 +1004,21 @@ window.addEventListener('wheel', (e) => {
   }, 30);
 }, { passive: false });
 
+// 모바일 터치 스와이프 (딜레이 없이 즉시 반응)
+let touchStartY = 0;
+let touchMoved = false;
+window.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+  touchMoved = false;
+}, { passive: true });
+window.addEventListener('touchend', (e) => {
+  if (isSnapping) return;
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(dy) < 40) return; // 너무 짧은 스와이프 무시
+  if (dy > 0) snapTo(currentIdx + 1);
+  else snapTo(currentIdx - 1);
+}, { passive: true });
+
 // 진행 바 + 현재 섹션 추적
 let lastScrollIdx = 0;
 window.addEventListener('scroll', () => {
@@ -996,7 +1029,7 @@ window.addEventListener('scroll', () => {
   sections.forEach((s, i) => {
     const r = s.getBoundingClientRect();
     if (r.top <= mid && r.bottom > mid) {
-      if (i !== lastScrollIdx) { lastScrollIdx = i; triggerRiaPeek(); }
+      if (i !== lastScrollIdx) { lastScrollIdx = i; triggerRiaPeek(i); }
       currentIdx = i;
     }
   });
